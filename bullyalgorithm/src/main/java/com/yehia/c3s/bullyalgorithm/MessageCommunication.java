@@ -19,7 +19,7 @@ public class MessageCommunication {
         CharBuffer charBuf = b.asCharBuffer();
 
         // Returns the received message
-        StringBuffer messageReceived = new StringBuffer();
+        StringBuilder messageReceived = new StringBuilder();
         
         char c;
         while((c=charBuf.get()) != 0) {
