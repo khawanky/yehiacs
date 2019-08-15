@@ -3,42 +3,67 @@ package com.yehia.c3s.bullyalgorithm;
 import javax.swing.JOptionPane;
 
 public class BullyAlgorithmProcess {
-	public static final long waitTimeMs=2000L;
+	public static final long waitTimeMs=3000L;
 	
 	public static void main(String[] args) {
 		int processId = Integer.parseInt((String)JOptionPane.showInputDialog("Please enter process Id"));
-		System.out.println(processId);
 		process(processId);
 	}
 	
 	public static void process(int pId) {
 		try {
+			// Every process initially send a dummy message at the beginning to clear previous data
+			MessageCommunication.sendMessage("SharedMemoryFile", pId+"_"+"DUMMY");
+			System.out.println("PID="+pId+", send DUMMY message");
+			
 			String messageReceived = "";
+			boolean iAmTheLeader = false;
 			while (true) {
-				// Every process initially waits to see if there is a Victory message ,
+				System.out.println("PID="+pId+", begin");
+				
+				// Then waits to see if there is a Victory message from another process
 				Thread.sleep(waitTimeMs);
 				
-				messageReceived = MessageCommunication.receiveMessage("SharedMemoryFile");
-				if (messageReceived.equals("")) {
-					// if not receive any, consider itself as the coordinator and send Victory message
+				if(iAmTheLeader) {
+					System.out.println("PID:"+pId+", is still the leader!");
 					MessageCommunication.sendMessage("SharedMemoryFile", pId+"_"+"VICTORY");
+					System.out.println("PID="+pId+", send another VICTORY message");
 				} else {
-					String[] content = messageReceived.toString().split("_");
-					int senderPId = Integer.parseInt(content[0]);
-					String msgType = content[1];
-										
-					if(senderPId == pId) { // The same process, send new heart beat
+					messageReceived = MessageCommunication.receiveMessage("SharedMemoryFile");
+					if (messageReceived.equals("")) {
+						// if not receive any, consider itself as the coordinator and send Victory message
 						MessageCommunication.sendMessage("SharedMemoryFile", pId+"_"+"VICTORY");
-						continue;
+						System.out.println("PID="+pId+", send VICTORY message");
 					} else {
-						if(msgType.equals("VICTORY")) {
-							continue;
-						}
-						else { // TODO: Begin Election process
-							continue;
+						System.out.println("PID="+pId+", receives message");
+						String[] content = messageReceived.toString().split("_");
+						int senderPId = Integer.parseInt(content[0]);
+						String msgType = content[1];
+						if(senderPId == pId) { // The same process, send new heart beat
+							
+							if(msgType.equals("VICTORY") || msgType.equals("DUMMY")) {
+								System.out.println("PID="+pId+", "+msgType+" message received from myself, so I AM THE LEADEEEERRR !! :P");
+		
+								MessageCommunication.sendMessage("SharedMemoryFile", pId+"_"+"VICTORY");
+								System.out.println("PID="+pId+", send another VICTORY message");
+								
+								iAmTheLeader = true;
+							}
+	//						continue;
+						} else {
+							if(msgType.equals("VICTORY")) {
+								System.out.println("PID="+pId+", receives VICTORY message from pId="+senderPId);
+	//							continue;
+							}
+							else { // TODO: not victory message (Alive, or Election
+								System.out.println("PID="+pId+", receives Other message from pId="+senderPId);
+	//							continue;
+							}
 						}
 					}
 				}
+				
+				System.out.println("----------------------------------------------------");
 			}
 			
 //			if(processId == 1) 

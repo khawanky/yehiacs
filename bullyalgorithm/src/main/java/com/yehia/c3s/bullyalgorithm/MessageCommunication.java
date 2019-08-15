@@ -41,9 +41,11 @@ public class MessageCommunication {
         char[] string = (message+messageDelimiter).toCharArray();
         charBuf.put(string);
 
-        System.out.println("Waiting for client.");
-        while(charBuf.get(0) != messageDelimiter);
-        System.out.println("Finished waiting.");
+        
+        // No need to wait Client
+//        System.out.println("Waiting for client.");
+//        while(charBuf.get(0) != messageDelimiter);
+//        System.out.println("Finished waiting.");
 	}
 	
 }
