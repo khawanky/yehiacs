@@ -1,9 +1,6 @@
-package bullyalgorithm;
+package bullyalgorithm.process;
 
 import com.yehia.c3s.models.Status;
-
-import bullyalgorithm.process.ConsumerProcess;
-import bullyalgorithm.process.ProducerProcess;
 
 public class Excecutor {
 

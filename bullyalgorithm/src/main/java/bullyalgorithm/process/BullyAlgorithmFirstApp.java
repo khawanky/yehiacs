@@ -1,4 +1,4 @@
-package bullyalgorithm;
+package bullyalgorithm.process;
 
 import java.util.Scanner;
 
