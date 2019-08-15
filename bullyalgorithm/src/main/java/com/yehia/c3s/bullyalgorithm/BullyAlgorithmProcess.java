@@ -3,7 +3,7 @@ package com.yehia.c3s.bullyalgorithm;
 import javax.swing.JOptionPane;
 
 public class BullyAlgorithmProcess {
-	public static final long waitTimeMs=3000L;
+	public static final long waitTimeMs=500L;
 	
 	public static void main(String[] args) {
 		int processId = Integer.parseInt((String)JOptionPane.showInputDialog("Please enter process Id"));
@@ -25,7 +25,7 @@ public class BullyAlgorithmProcess {
 				Thread.sleep(waitTimeMs);
 				
 				if(iAmTheLeader) {
-					System.out.println("PID:"+pId+", is still the leader!");
+					System.out.println("PID="+pId+", is still the leader!");
 					MessageCommunication.sendMessage("SharedMemoryFile", pId+"_"+"VICTORY");
 					System.out.println("PID="+pId+", send another VICTORY message");
 				} else {
@@ -40,7 +40,6 @@ public class BullyAlgorithmProcess {
 						int senderPId = Integer.parseInt(content[0]);
 						String msgType = content[1];
 						if(senderPId == pId) { // The same process, send new heart beat
-							
 							if(msgType.equals("VICTORY") || msgType.equals("DUMMY")) {
 								System.out.println("PID="+pId+", "+msgType+" message received from myself, so I AM THE LEADEEEERRR !! :P");
 		
