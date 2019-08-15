@@ -20,14 +20,24 @@ public class BullyAlgorithmProcess {
 			if(processId == 2) {
 				String messageReceived = MessageCommunication.receiveMessage("SharedMemoryFile");
 				String[] content = messageReceived.split("_");
+				int senderPId = Integer.parseInt(content[0]);
+				
 				
 				if(content[1].equals("ELECTION")) {
+					if(processId > senderPId) {
+						// TODO Stop sending and wait for Victory message
+						
+					} else {
+						// TODO Send Alive message
+						
+						// TODO Send Election message
+					}
 					
 				} else if(content[1].equals("ALIVE")) {
-					// Stop sending and wait for Victory message TODO
+					// TODO Stop sending and wait for Victory message
 					
 				} else if(content[1].equals("VICTORY")) {
-					// Consider the sender the coordinator TODO
+					// TODO Consider the sender the coordinator
 					
 				}
 				
