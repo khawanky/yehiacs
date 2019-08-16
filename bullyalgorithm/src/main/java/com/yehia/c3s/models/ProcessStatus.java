@@ -3,6 +3,7 @@ package com.yehia.c3s.models;
 public class ProcessStatus {
 	private boolean isCoordinatorExists=false;
 	private boolean isTheWinningElector=false;
+	private boolean hasSentElection=false;
 	
 	public ProcessStatus(boolean isCoordinatorExists, boolean isTheWinningElector) {
 		super();
@@ -22,7 +23,12 @@ public class ProcessStatus {
 	public void setTheWinningElector(boolean isTheWinningElector) {
 		this.isTheWinningElector = isTheWinningElector;
 	}
-	
-	
-	
+
+	public boolean isHasSentElection() {
+		return hasSentElection;
+	}
+
+	public void setHasSentElection(boolean hasSentElection) {
+		this.hasSentElection = hasSentElection;
+	}
 }

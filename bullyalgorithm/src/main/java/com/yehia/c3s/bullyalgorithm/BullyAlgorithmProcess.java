@@ -24,6 +24,7 @@ public class BullyAlgorithmProcess {
 			appendMessage(messageReceived, pId, MessageType.ELECTION, Calendar.getInstance().getTimeInMillis());
 
 			while (true) {
+				System.out.println("----------------------------------------------------");
 				Thread.sleep(waitTimeMs);
 				long now = Calendar.getInstance().getTimeInMillis();
 
@@ -37,28 +38,24 @@ public class BullyAlgorithmProcess {
 
 				if (status.isCoordinatorExists()) {
 					System.out.printf("Coordinator Exists = Continue\n");
-					continue;	
-				}
-				else {
+					isCoordinator = false;
+				} else if (isCoordinator) {
+					appendMessage(messageReceived, pId, MessageType.COORDINATION,
+							Calendar.getInstance().getTimeInMillis());
+				} else {
 					System.out.printf("No Coordinator Exists = Start Election\n");
 
-					if(status.isTheWinningElector() && !isCoordinator) {
+					if (!status.isHasSentElection()) {
+						appendMessage(messageReceived, pId, MessageType.ELECTION,
+								Calendar.getInstance().getTimeInMillis());
+					} else if (status.isTheWinningElector()) {
 						sendNewMessage(pId, MessageType.COORDINATION, Calendar.getInstance().getTimeInMillis());
 						isCoordinator = true; // will consider himself as coordinator temporary without
 						// communicating this
 						System.out.printf(
 								"************ Process [%s] has been announced as a coordinator **************\n", pId);
-						continue;
-						
+
 					}
-					
-					if (isCoordinator) {
-						appendMessage(messageReceived, pId, MessageType.COORDINATION,
-								Calendar.getInstance().getTimeInMillis());
-					} else {
-						appendMessage(messageReceived, pId, MessageType.ELECTION, Calendar.getInstance().getTimeInMillis());
-					}
-					System.out.println("----------------------------------------------------");
 				}
 			}
 		} catch (Throwable e) {
@@ -74,11 +71,13 @@ public class BullyAlgorithmProcess {
 			int senderPId = Integer.parseInt(content[0]);
 			String msgType = content[1];
 			long time = Long.parseLong(content[2]);
-			if (now - time < 1000L) {
-				if (msgType.equals(MessageType.COORDINATION.toString())) {
+			if (now - time < 1000L && senderPId > pId) {
+				if (msgType.equals(MessageType.COORDINATION.toString()))
 					processStatus.setCoordinatorExists(true);
-				} else if (msgType.equals(MessageType.ELECTION.toString()) && senderPId > pId)
+				if (msgType.equals(MessageType.ELECTION.toString()))
 					candidateIds.add(senderPId);
+			} else if (msgType.equals(MessageType.ELECTION.toString()) && senderPId == pId) {
+				processStatus.setHasSentElection(true);
 			}
 		}
 		processStatus.setTheWinningElector(candidateIds.isEmpty());
