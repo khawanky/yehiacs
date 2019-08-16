@@ -34,7 +34,8 @@ public class BullyAlgorithmProcess {
 						// if not receive any, consider itself as the coordinator and send Victory message
 						MessageCommunication.sendMessage("SharedMemoryFile", pId+"_"+"VICTORY");
 						System.out.println("PID="+pId+", send VICTORY message");
-					} else {
+					}
+					else {
 						System.out.println("PID="+pId+", receives message");
 						String[] content = messageReceived.toString().split("_");
 						int senderPId = Integer.parseInt(content[0]);

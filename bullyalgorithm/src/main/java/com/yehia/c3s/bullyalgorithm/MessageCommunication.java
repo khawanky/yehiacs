@@ -15,7 +15,7 @@ public class MessageCommunication {
 		File f = new File(sharedFileName);
         FileChannel channel = FileChannel.open( f.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE );
 
-        MappedByteBuffer b = channel.map( MapMode.READ_WRITE, 0, 4096 );
+        MappedByteBuffer b = channel.map(MapMode.READ_WRITE, 0, 4096);
         CharBuffer charBuf = b.asCharBuffer();
 
         // Returns the received message
