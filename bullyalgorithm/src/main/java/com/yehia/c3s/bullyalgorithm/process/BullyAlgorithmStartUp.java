@@ -86,17 +86,19 @@ public class BullyAlgorithmStartUp {
 		ProcessStatus processStatus = new ProcessStatus(false, false);
 		Set<Integer> candidateIds = new HashSet<Integer>();
 		for (String msg : oldMessages) {
-			String[] msgContent = msg.toString().split("_");
-			int senderPId = Integer.parseInt(msgContent[0]);
-			String msgType = msgContent[1];
-			long time = Long.parseLong(msgContent[2]);
-			if (now - time < 1000L && senderPId > pId) {
-				if (msgType.equals(MessageType.COORDINATION.toString()))
-					processStatus.setCoordinatorExists(true);
-				if (msgType.equals(MessageType.ELECTION.toString()))
-					candidateIds.add(senderPId);
-			} else if (msgType.equals(MessageType.ELECTION.toString()) && senderPId == pId) {
-				processStatus.setHasSentElection(true);
+			if(msg.length() > 0) {
+				String[] msgContent = msg.toString().split("_");
+				int senderPId = Integer.parseInt(msgContent[0]);
+				String msgType = msgContent[1];
+				long time = Long.parseLong(msgContent[2]);
+				if (now - time < 1000L && senderPId > pId) {
+					if (msgType.equals(MessageType.COORDINATION.toString()))
+						processStatus.setCoordinatorExists(true);
+					if (msgType.equals(MessageType.ELECTION.toString()))
+						candidateIds.add(senderPId);
+				} else if (msgType.equals(MessageType.ELECTION.toString()) && senderPId == pId) {
+					processStatus.setHasSentElection(true);
+				}
 			}
 		}
 		processStatus.setTheWinningElector(candidateIds.isEmpty());

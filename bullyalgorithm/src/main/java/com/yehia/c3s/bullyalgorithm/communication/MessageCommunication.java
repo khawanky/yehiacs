@@ -8,6 +8,7 @@ import java.nio.channels.FileChannel.MapMode;
 import java.nio.file.StandardOpenOption;
 
 public class MessageCommunication {
+	public static final char messageDelimiter = '\0';
 	public static final int sharedFileMaxBufferSize = 4194304; // 4 MBs
 	
 	public static String receiveMessage(String sharedFileName) throws Throwable {
@@ -24,6 +25,7 @@ public class MessageCommunication {
         while((c=charBuf.get()) != 0) {
         	messageReceived.append(c);
         }
+//        charBuf.put(0, messageDelimiter);
         return messageReceived.toString();
 	}
 	
@@ -33,7 +35,7 @@ public class MessageCommunication {
         MappedByteBuffer b = channel.map(MapMode.READ_WRITE, 0, sharedFileMaxBufferSize);
         CharBuffer charBuf = b.asCharBuffer();
 
-        char[] string = message.toCharArray();
+        char[] string = (message+messageDelimiter).toCharArray();
         charBuf.put(string);
 	}
 	
