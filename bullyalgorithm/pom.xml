@@ -16,7 +16,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.yehia.c3s.bullyalgorithm.process.BullyAlgorithmStartUp</mainClass>
+							<mainClass>com.yehia.c3s.bullyalgorithm.gui.BullyAlgorithmUI</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

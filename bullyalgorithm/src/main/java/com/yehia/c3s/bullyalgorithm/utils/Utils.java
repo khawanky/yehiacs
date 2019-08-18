@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Utils {
 	public static String getFormattedTime (long time) {
-		DateFormat simple = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss:SSS"); 
+		DateFormat simple = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss.SSS"); 
         Date result = new Date(time); 
         return simple.format(result);
 	}
@@ -15,7 +15,7 @@ public class Utils {
 	public static int[] generateRandomNumersArray(int arraySize, int numbersRange) {
 		int[] randomNumbers = new int[arraySize];
 		Random randomNumberGenerator = new Random();
-		for (int i : randomNumbers) {
+		for(int i=0;i<arraySize;i++) {
 			randomNumbers[i] = randomNumberGenerator.nextInt(numbersRange);
 		}
 		return randomNumbers;

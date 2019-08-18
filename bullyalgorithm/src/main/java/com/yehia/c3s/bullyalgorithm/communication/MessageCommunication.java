@@ -14,7 +14,7 @@ public class MessageCommunication {
 	public static String receiveMessage(String sharedFileName) throws Throwable {
 		File f = new File(sharedFileName);
         FileChannel channel = FileChannel.open(f.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE, StandardOpenOption.CREATE);
-
+       
         MappedByteBuffer b = channel.map(MapMode.READ_WRITE, 0, sharedFileMaxBufferSize);
         CharBuffer charBuf = b.asCharBuffer();
 
