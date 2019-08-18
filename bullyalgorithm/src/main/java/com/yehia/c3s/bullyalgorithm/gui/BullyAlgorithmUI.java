@@ -109,7 +109,7 @@ public class BullyAlgorithmUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("From 1000 generated numbers");
+        jLabel1.setText("From "+RandomNumberComputingProcess.RANDOM_NUMBERS_COUNT+" generated numbers");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
