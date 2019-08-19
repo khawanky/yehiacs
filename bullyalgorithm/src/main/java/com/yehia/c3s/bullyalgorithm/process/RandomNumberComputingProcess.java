@@ -28,7 +28,7 @@ public class RandomNumberComputingProcess {
 			try {
 				distributeAndCoordinatorCompution(pId,bullyAlgorithmUI);
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 		} else {
 			computeChunk(pId);
@@ -41,7 +41,8 @@ public class RandomNumberComputingProcess {
 		int[] runningProcesses = getOtherRunningProcesses();
 		if(runningProcesses == null || runningProcesses.length < 1) {
 			bullyAlgorithmUI.printFinalResult("No running process");
-			throw new Exception("No running process");
+			bullyAlgorithmUI.enableGenerateAndComputeButton();
+			throw new Exception("No running process to serve my computing request as a the coordinator");
 		}
 		
 		sendChunksToRunningProcesses(runningProcesses);
